@@ -1,28 +1,51 @@
-import pytest
-# TODO: add necessary import
+import numpy as np
+from sklearn.ensemble import RandomForestClassifier
+from ml.model import compute_model_metrics, train_model, inference
 
-# TODO: implement the first test. Change the function name and input as needed
-def test_one():
+def test_compute_model_metrics():
     """
-    # add description for the first test
+    Test that the compute_model_metrics function calculates
+    and returns three float values: precision, recall, and f1 score.
     """
-    # Your code here
-    pass
+    # Create fake arrays of known labels and predictions
+    y_true = np.array([0, 1, 0, 1])
+    y_pred = np.array([0, 1, 0, 0])
+    
+    precision, recall, fbeta = compute_model_metrics(y_true, y_pred)
+    
+    assert isinstance(precision, float)
+    assert isinstance(recall, float)
+    assert isinstance(fbeta, float)
 
 
-# TODO: implement the second test. Change the function name and input as needed
-def test_two():
+def test_train_model():
     """
-    # add description for the second test
+    Test that the train_model function trains and 
+    returns a RandomForestClassifier object.
     """
-    # Your code here
-    pass
+    # Create tiny fake training dataset
+    X_train = np.array([[1, 2], [3, 4], [5, 6], [7, 8]])
+    y_train = np.array([0, 1, 0, 1])
+    
+    model = train_model(X_train, y_train)
+    
+    # Verify the returned model is a Random Forest
+    assert isinstance(model, RandomForestClassifier)
 
 
-# TODO: implement the third test. Change the function name and input as needed
-def test_three():
+def test_inference():
     """
-    # add description for the third test
+    Test that the inference function returns a numpy array of predictions
+    that matches the length of the input test data.
     """
-    # Your code here
-    pass
+    X_train = np.array([[1, 2], [3, 4], [5, 6], [7, 8]])
+    y_train = np.array([0, 1, 0, 1])
+    model = train_model(X_train, y_train)
+    
+    # Create tiny fake testing dataset
+    X_test = np.array([[1, 2], [5, 6]])
+    preds = inference(model, X_test)
+    
+    # Verify the predictions are a numpy array and match the length of the test data
+    assert isinstance(preds, np.ndarray)
+    assert len(preds) == len(X_test)
